@@ -1,7 +1,5 @@
 
 
-
-
 /*
  * This file is part of [Memory Allocator].
  *
