@@ -1,7 +1,5 @@
 
 
-
-
 /*
  * This file is part of [Memory Allocator].
  *
@@ -22,10 +20,6 @@
  */
 
 
-
-## `include/memory.h`
-
-```c
 #ifndef MEMORY_H
 #define MEMORY_H
 
@@ -94,4 +88,4 @@ static inline uint64_t v2p(const void *va)
 }
 
 #endif
-```
+
