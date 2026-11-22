@@ -10,7 +10,4 @@ syscalls are stubbed.
 
 Full documentation is available in the [project wiki](https://github.com/maximilianfeldthusen/MemoryAllocator/wiki).
 
-https://github.com/maximilianfeldthusen/MemoryAllocator/wiki
-
-Read the [official doc] https://github.com/maximilianfeldthusen/MemoryAllocator.git
 
