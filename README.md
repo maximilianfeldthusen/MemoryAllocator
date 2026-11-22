@@ -1,5 +1,7 @@
  ## MemoryAllocator
 
+This project is developed as a low-level systems programming and operating-system learning project.
+
 ### kernel — Project Wiki
 
 A small x86_64 (arm64 planned) kernel. Bare metal, no libc, GRUB/multiboot2.
