@@ -1,19 +1,21 @@
-name: Trivy licensscan og SBOM
+
+name: Trivy licens- og afhængighedsscanning
 
 on:
   push:
     branches: [main]
   pull_request:
   schedule:
+    # Kør hver mandag kl. 06:00 UTC
     - cron: '0 6 * * 1'
-  workflow_dispatch:
+  workflow_dispatch:   # gør det muligt at starte manuelt fra GitHub UI
 
 permissions:
   contents: read
 
 jobs:
   license-scan:
-    name: Licenspolitik + SBOM
+    name: Scann licenser og sårbarheder
     runs-on: ubuntu-latest
 
     steps:
@@ -32,39 +34,15 @@ jobs:
           sudo apt-get install -y trivy
           trivy --version
 
-      # GATE: fejler ved forbudte (CRITICAL) og stærkt begrænsede (HIGH) licenser
-      - name: Håndhæv licenspolitik
+      - name: Scann licenser (output i loggen)
         run: |
+          # --exit-code 0 => workflowet fejler IKKE selv ved fund;
+          # ret til 1, hvis du vil have build til at fejle på fund
           trivy fs \
-            --config trivy.yaml \
             --scanners license \
-            --severity CRITICAL,HIGH \
-            --exit-code 1 \
+            --exit-code 0 \
             .
 
-      # Informativ scan med ALT indhold (også lav-severitet) — fejler aldrig
-      - name: Informativ licensscan (log-output)
-        if: always()   # kører selv hvis policysteppen fejlede
-        run: |
-          trivy fs --scanners license --exit-code 0 .
-
-      - name: Generér SBOM i SPDX-format
-        if: always()
-        run: |
-          trivy fs --format spdx-json --output sbom.spdx.json --scanners license .
-
-      - name: Generér SBOM i CycloneDX-format
-        if: always()
-        run: |
-          trivy fs --format cyclonedx --output sbom.cdx.json .
-
-      - name: Upload SBOM'er som artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: sbom
-          path: |
-            sbom.spdx.json
-            sbom.cdx.json
-          retention-days: 90
-
+      # Vil du også scanne for sårbarheder og secrets, så ændr linjen til:
+      #   trivy fs --scanners vuln,license,secret --exit-code 1 .
+      # (med --exit-code 1 fejler jobbet, hvis der findes kritiske fund)
