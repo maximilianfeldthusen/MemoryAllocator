@@ -1,4 +1,3 @@
-
 name: Trivy licens- og afhængighedsscanning
 
 on:
@@ -45,4 +44,4 @@ jobs:
 
       # Vil du også scanne for sårbarheder og secrets, så ændr linjen til:
       #   trivy fs --scanners vuln,license,secret --exit-code 1 .
-      # (med --exit-code 1 fejler jobbet, hvis der findes kritiske fund)
+      # (med --exit-code 1 fejler jobbet, hvis der findes kritiske fund
